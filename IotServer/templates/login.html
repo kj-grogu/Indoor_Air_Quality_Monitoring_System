@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    {% if error_message %}
+      <p>{{ error_message }}</p>
+    {% endif %}
+    <form method="POST" action="{{ url_for('login') }}">
+      <label for="useremail">Useremail:</label>
+      <input type="text" id="useremail" name="useremail" required>
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      <br>
+      <input type="submit" value="Login">
+      <a href="{{ url_for('register') }}">Register</a>
+    </form>
+  </body>
+</html>

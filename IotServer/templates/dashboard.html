@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dashboard</title>
+      <style>
+    /* Define table styles */
+    body {
+        font-family: Consolas, monospace;
+  justify-content: center;
+  align-items: center;
+    }
+    table {
+        border-collapse: collapse;
+        border: 2px solid #999;
+      width: 50%;
+    }
+
+    th, td {
+      text-align: left;
+      border: 1px solid #ccc;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    th {
+      background-color: #429aff;
+      color: white;
+    }
+  </style>
+  </head>
+  <body>
+    <h1>Dashboard</h1>
+    <br>
+    <button onclick="reloadData()">Reload Data</button>
+    <button onclick="sendReport()">Send Report</button>
+    <button onclick="sendONSignal()">Turn ON Device</button>
+    <button onclick="sendOFFSignal()">Turn OFF Device</button>
+    <br>
+    <H2>Summary for last 24 Hrs</H2>
+    <table id="dashboard-grid-summary">
+      <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Min</th>
+              <th>Max</th>
+              <th>Avg</th>
+            </tr>
+          </thead>
+      <tbody>
+        {% for data in dashboard_data.summary %}
+          <tr>
+            <td>{{ data.Metric }}</td>
+            <td>{{ data.Min }}</td>
+            <td>{{ data.Max }}</td>
+            <td>{{ data.Avg }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <H2>Most recent Sensor Data</H2>
+    <table id="dashboard-grid">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Value</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in dashboard_data.data %}
+          <tr>
+            <td>{{ data.Metric }}</td>
+            <td>{{ data.Value }}</td>
+            <td>{{ data.Timestamp }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
+    <script>
+        function reloadData() {
+        const url = '/dashboard/data';
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+               // do something with the data, e.g. update the dashboard grid
+                console.log(data);
+                var grid = document.getElementById('dashboard-grid');
+                 // clear the existing grid rows
+                while (grid.firstChild) {
+                    grid.removeChild(grid.firstChild);
+                }
+                // add new rows for each data item
+                data.forEach(item => {
+                    const row = grid.insertRow(-1);
+                    const metricCell = row.insertCell(0);
+                    const valueCell = row.insertCell(1);
+                    const timestampCell = row.insertCell(2);
+                    metricCell.textContent = item.Metric;
+                    timestampCell.textContent = item.Timestamp;
+                    valueCell.textContent = item.Value;
+                });
+
+                console.log("data");
+            })
+            .catch(error => {
+                console.error('There was a problem fetching the data:', error);
+            });
+    }
+
+
+    function sendReport() {
+      const url = '/report';
+      fetch(url, { method: 'POST' })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          else{
+            alert('Report sent to your registered email!');
+          }
+        })
+        .catch(error => {
+          console.error('There was a problem sending the report:', error);
+        });
+    }
+
+    function sendONSignal() {
+      const url = '/deviceon';
+      fetch(url, { method: 'POST' })
+        .then(response => {
+          alert('Device Turn ON Command send!');
+        })
+        .catch(error => {
+          console.error('There was a problem sending the signal:', error);
+        });
+    }
+
+
+    function sendOFFSignal() {
+      const url = '/deviceoff';
+      fetch(url, { method: 'POST' })
+        .then(response => {
+            alert('Device Turn OFF Command send!');
+        })
+        .catch(error => {
+          console.error('There was a problem sending the signal:', error);
+        });
+    }
+    </script>
+  </body>
+</html>

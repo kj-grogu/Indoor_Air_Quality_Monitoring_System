@@ -1,0 +1,77 @@
+
+ssh -i "bprakash2-ubuntu.pem" ubuntu@ec2-34-217-96-154.us-west-2.compute.amazonaws.com
+
+
+
+Error: loading initial config: loading new config: starting caddy administration endpoint: listen tcp 127.0.0.1:2019: bind: address already in use
+Error: caddy process exited with error: exit status 1
+
+
+
+source venv/bin/activate
+
+ps -C gunicorn fch -o pid | head -n 1
+
+kill -s HUP <pid_from_above>
+
+
+
+iot315coen / COEN315iot / 
+
+iot315coen@gmail.com / COEN315iotlogin1234
+
+
+API KEY ==
+
+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
+
+
+API KEY ==
+
+
+wenuiqpcjxkrjqjc
+
+
+
+
+systemctl status mysql
+
+sudo systemctl stop mysql
+
+UPDATE user SET authentication_string = PASSWORD('1253456') WHERE User = 'root' AND Host = 'localhost';
+
+UPDATE user SET Password = PASSWORD('mysqlpwd') WHERE Host = 'localhost' AND User = 'root';
+
+
+ SET PASSWORD FOR root@'localhost' = PASSWORD('1253456');
+
+
+ ERROR: Database files are locked. Daemon already running?
+
+
+
+ CREATE TABLE Users (
+    email VARCHAR(100),
+    password VARCHAR(100)
+);
+
+
+INSERT INTO my_table (email, password) VALUES ('abc@gmail.com', 'pwd');
+
+
+INSERT INTO SensorData (Metric, Value, Timestamp) VALUES ('Alcholho', 30, NOW());
+
+
+SELECT Metric, MIN(CAST(Value AS DOUBLE)) AS min, MAX(CAST(Value AS DOUBLE)) AS max, AVG(CAST(Value AS DOUBLE)) AS average FROM SensorData WHERE Timestamp >= DATE_SUB(NOW(), INTERVAL 24 HOUR) GROUP BY Metric;
+
+
+
+pip install mysql-connector-python
+
+pip install Flask
+
+pip install Flask-Mail
+
+
+pip install -r /path/to/requirements.txt
+
